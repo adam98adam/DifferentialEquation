@@ -149,13 +149,27 @@ public class Differential {
         return max;
     }
 
+    public static double fxy(double x,double y) {
+       return y + (2 * Math.cos(Math.toRadians(x)));
+    }
+
     public static void eulerMethod() {
        for(int i=0;i<getN();i++) {
-           getYs()[i+1] = getYs()[i] + (getH() * (getYs()[i] + (2 * Math.cos(Math.toRadians(getXs()[i])))));
+           getYs()[i+1] = getYs()[i] + (getH() * fxy(getXs()[i],getYs()[i]));
        }
        for(int i=1;i<=getN();i++) {
            getComputingError()[i-1] = Math.abs(getYs()[i] - (Math.sin(Math.toRadians(getXs()[i])) - Math.cos(Math.toRadians(getXs()[i]))));
        }
+    }
+
+    public static void heunMethod() {
+        for(int i=0;i<getN();i++) {
+            getYs()[i+1] = getYs()[i] + (getH()/2 * ((fxy(getXs()[i],getYs()[i]) + fxy(getXs()[i] + getH(),getYs()[i] + (getH() * fxy(getXs()[i],getYs()[i]))))));
+        }
+        for(int i=1;i<=getN();i++) {
+            getComputingError()[i-1] = Math.abs(getYs()[i] - (Math.sin(Math.toRadians(getXs()[i])) - Math.cos(Math.toRadians(getXs()[i]))));
+        }
+
     }
 
     public static void main(String[] args) {
@@ -165,6 +179,10 @@ public class Differential {
         //allocationXYs(getN());
         showXs();
         eulerMethod();
+        showYs();
+        showComputingError();
+        System.out.println("Maximum Computing Error : " + getMaxComputingError());
+        heunMethod();
         showYs();
         showComputingError();
         System.out.println("Maximum Computing Error : " + getMaxComputingError());
