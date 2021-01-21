@@ -72,7 +72,7 @@ public class Differential {
    public static boolean checkA(String a) {
        try {
            double value = Double.parseDouble(a.replace(',', '.'));
-           return value > 0.0 && value < 10.0;
+           return value > 0.0 && value <= 2.0;
        } catch (Exception e) {
            return false;
        }
@@ -94,11 +94,11 @@ public class Differential {
 
    public static void inputA() {
        String a;
-       System.out.println("Enter real number greater than 0.0 and less than 10.0: ");
+       System.out.println("Enter real number greater than 0.0 and less than or equal to 2.0: ");
        a = userInput();
        while(!checkA(a)) {
            System.out.println("Sorry try again");
-           System.out.println("Enter real number greater than 0.0 and less than 10.0: ");
+           System.out.println("Enter real number greater than 0.0 and less than or equal to 2.0: ");
            a = userInput();
        }
        setA(Double.parseDouble(a.replace(',', '.')));
@@ -108,7 +108,7 @@ public class Differential {
        setXs(new double[n+1]);
        setYs(new double[n+1]);
        getXs()[0] = 0.0;
-       getYs()[0] = -1.0;
+       getYs()[0] = 0.0;
    }
 
    public static void allocationComputingError(int n) {
@@ -126,18 +126,21 @@ public class Differential {
        for(int i=0;i<=getN();i++) {
            System.out.println("x[" + i + "] = " +getXs()[i]);
        }
+       System.out.println("");
     }
 
     public static void showYs() {
         for(int i=0;i<=getN();i++) {
             System.out.println("y[" + i + "] = " +getYs()[i]);
         }
+        System.out.println("");
     }
 
     public static void showComputingError() {
         for(int i=0;i<getN();i++) {
             System.out.println("computingError[" + i + "] = " +getComputingError()[i]);
         }
+        System.out.println("");
     }
 
     public static double getMaxComputingError() {
@@ -154,6 +157,7 @@ public class Differential {
     }
 
     public static void eulerMethod() {
+       System.out.println("Euler's Method:");
        for(int i=0;i<getN();i++) {
            getYs()[i+1] = getYs()[i] + (getH() * fxy(getXs()[i],getYs()[i]));
        }
@@ -162,9 +166,11 @@ public class Differential {
        }
     }
 
+
     public static void heunMethod() {
+        System.out.println("Heun's Method:");
         for(int i=0;i<getN();i++) {
-            getYs()[i+1] = getYs()[i] + (getH()/2 * ((fxy(getXs()[i],getYs()[i]) + fxy(getXs()[i] + getH(),getYs()[i] + (getH() * fxy(getXs()[i],getYs()[i]))))));
+            getYs()[i+1] = getYs()[i] + getH()/2 * (fxy(getXs()[i],getYs()[i]) + fxy(getXs()[i+1],getYs()[1] + getH() * fxy(getXs()[i],getYs()[1])));
         }
         for(int i=1;i<=getN();i++) {
             getComputingError()[i-1] = Math.abs(getYs()[i] - (Math.sin(Math.toRadians(getXs()[i])) - Math.cos(Math.toRadians(getXs()[i]))));
@@ -181,13 +187,11 @@ public class Differential {
         eulerMethod();
         showYs();
         showComputingError();
-        System.out.println("Maximum Computing Error : " + getMaxComputingError());
+        System.out.println("Maximum Computing Error : " + getMaxComputingError() + "\n");
         heunMethod();
         showYs();
         showComputingError();
         System.out.println("Maximum Computing Error : " + getMaxComputingError());
-        //System.out.println("Length of xs is : " + getXs().length + " x[0]= " + getXs()[0]);
-        //System.out.println("Length of ys is : " + getYs().length + " y[0]= " + getYs()[0]);
 
     }
 
