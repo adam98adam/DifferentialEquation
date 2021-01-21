@@ -63,7 +63,7 @@ public class Differential {
    public static boolean checkN(String n) {
        try {
            int value = Integer.parseInt(n);
-           return value >= 1 && value < 10;
+           return value >= 1; //&& value < 10;
        } catch (Exception e) {
            return false;
        }
@@ -108,7 +108,7 @@ public class Differential {
        setXs(new double[n+1]);
        setYs(new double[n+1]);
        getXs()[0] = 0.0;
-       getYs()[0] = 0.0;
+       getYs()[0] = -1.0;
    }
 
    public static void allocationComputingError(int n) {
@@ -170,7 +170,7 @@ public class Differential {
     public static void heunMethod() {
         System.out.println("Heun's Method:");
         for(int i=0;i<getN();i++) {
-            getYs()[i+1] = getYs()[i] + getH()/2 * (fxy(getXs()[i],getYs()[i]) + fxy(getXs()[i+1],getYs()[1] + getH() * fxy(getXs()[i],getYs()[1])));
+            getYs()[i+1] = getYs()[i] + getH()/2.0 * (fxy(getXs()[i],getYs()[i]) + fxy(getXs()[i+1],getYs()[1] + getH() * fxy(getXs()[i],getYs()[1])));
         }
         for(int i=1;i<=getN();i++) {
             getComputingError()[i-1] = Math.abs(getYs()[i] - (Math.sin(Math.toRadians(getXs()[i])) - Math.cos(Math.toRadians(getXs()[i]))));
@@ -182,7 +182,6 @@ public class Differential {
         inputN();
         inputA();
         fillXs();
-        //allocationXYs(getN());
         showXs();
         eulerMethod();
         showYs();
