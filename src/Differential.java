@@ -63,7 +63,7 @@ public class Differential {
    public static boolean checkN(String n) {
        try {
            int value = Integer.parseInt(n);
-           return value >= 1; //&& value < 10;
+           return value >= 1 && value < 10;
        } catch (Exception e) {
            return false;
        }
