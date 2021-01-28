@@ -118,7 +118,7 @@ public class Differential {
    public static void  fillXs() {
        setH(getA()/getN());
        for(int i=1;i<=getN();i++) {
-           getXs()[i] = 0 + i * getH();
+           getXs()[i] = i * getH();
        }
     }
 
@@ -153,8 +153,12 @@ public class Differential {
     }
 
     public static double fxy(double x,double y) {
-       return y + (2 * Math.cos(Math.toRadians(x)));
+       return y + 2 * Math.cos(x);
     }
+
+    public static double fx(double x) {
+       return Math.sin(x) - Math.cos(x);
+   }
 
     public static void eulerMethod() {
        System.out.println("Euler's Method:");
@@ -162,7 +166,7 @@ public class Differential {
            getYs()[i+1] = getYs()[i] + (getH() * fxy(getXs()[i],getYs()[i]));
        }
        for(int i=1;i<=getN();i++) {
-           getComputingError()[i-1] = Math.abs(getYs()[i] - (Math.sin(Math.toRadians(getXs()[i])) - Math.cos(Math.toRadians(getXs()[i]))));
+           getComputingError()[i-1] = Math.abs(getYs()[i] - fx(getXs()[i]));
        }
     }
 
@@ -170,10 +174,10 @@ public class Differential {
     public static void heunMethod() {
         System.out.println("Heun's Method:");
         for(int i=0;i<getN();i++) {
-            getYs()[i+1] = getYs()[i] + getH()/2.0 * (fxy(getXs()[i],getYs()[i]) + fxy(getXs()[i+1],getYs()[1] + getH() * fxy(getXs()[i],getYs()[1])));
+            getYs()[i+1] = getYs()[i] + getH()/2.0 * (fxy(getXs()[i],getYs()[i]) + fxy(getXs()[i+1],getYs()[i] + getH() * fxy(getXs()[i],getYs()[i])));
         }
         for(int i=1;i<=getN();i++) {
-            getComputingError()[i-1] = Math.abs(getYs()[i] - (Math.sin(Math.toRadians(getXs()[i])) - Math.cos(Math.toRadians(getXs()[i]))));
+            getComputingError()[i-1] = Math.abs(getYs()[i] - fx(getXs()[i]));
         }
 
     }
